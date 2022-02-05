@@ -1,0 +1,67 @@
+<html>
+<head>
+    <title>CS 328 - Final Project (Group 7)</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        var x = 0;
+        var y = 0;
+        var z = 0;
+        var uname = "";
+        var submitted = false;
+        function submit() {
+            if (document.getElementById("uname").value != "") {
+                $("#update").load("/login?u=" + document.getElementById("uname").value);
+                submitted = true;
+                uname = document.getElementById("uname").value;
+                console.log("yay !!!");
+            }
+        } 
+        function handleMotionEvent(event) {
+
+            x = event.acceleration.x;
+            y = event.acceleration.y;
+            z = event.acceleration.z;
+        }
+        if (DeviceOrientationEvent && typeof (DeviceOrientationEvent.requestPermission) === "function") {
+            DeviceMotionEvent.requestPermission().then(response => {
+                if (response == 'granted') {
+                    // Add a listener to get smartphone acceleration 
+                    // in the XYZ axes (units in m/s^2)
+
+                    window.addEventListener("devicemotion", handleMotionEvent, true);
+                    window.setInterval(function () {
+                        if (submitted) {
+                            $("#update").load("/data?u=" + uname + "&x=" + x + "&y=" + y + "&z=" + z);
+                            $("#steps").load("/steps?u=" + uname);
+                        }
+                    }, 10);
+                }
+
+            });
+        }
+        else {
+            console.log("bestie <3")
+            window.addEventListener("devicemotion", handleMotionEvent, true);
+            window.setInterval(function () {
+                if (submitted) {
+                    $("#update").load("/data?u=" + uname + "&x=" + x + "&y=" + y + "&z=" + z);
+                    $("#steps").load("/steps?u=" + uname);
+                }
+            }, 10);
+        }
+        function clear() {
+            $("#update").load("/clear");
+            submitted = false;
+            uname = "";
+        }
+    </script>
+</head>
+<body>
+    Hey bestie <3
+    <div id="update"></div>
+    <div id="steps"></div>
+   <input type="text" id="uname" name="uname">
+    <button onclick="submit()">Submit</button>
+    <button onclick="clear()">Clear</button>
+</body>
+</html>
