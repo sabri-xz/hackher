@@ -11,8 +11,7 @@ import time
 import psycopg2
 import os
 import sqlite3
-con = sqlite3.connect('girlboss.db')
-cur = con.cursor()
+
 
 # the app we use to manage the routes and run the app
 app = Flask(__name__)
@@ -20,12 +19,16 @@ app.secret_key = "gotti"
 # main homepage of the website
 @app.route('/', methods=['GET'])
 def home():
+    con = sqlite3.connect('girlboss.db')
+    cur = con.cursor()
     #if not session['uname']:
     #    return render_template("login.html")
     #else:   
     return render_template("index.html")  
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    con = sqlite3.connect('girlboss.db')
+    cur = con.cursor()
     if request.method=='GET':
         return render_template("login.html")  
     session['uname'] = request.args.get('uname')
@@ -57,6 +60,7 @@ def login():
 def logout():
     session.clear()
     return render_template("login.html")
+
 # runs our app using Flask
 if __name__ == "__main__":
     app.run(debug = True)
