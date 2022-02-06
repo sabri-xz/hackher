@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <script src="https://d3js.org/d3.v4.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/style.css') }}">
 </head>
 <body>
 
@@ -17,18 +17,27 @@
     </header>
 
     <body>
-
+        <h1>:D this is where you log in or create an account and pick your plant bestie <3  </h1>
+        <img src="/static/visuals/abutilon_flower.png" style="height:150px;" />
+        Abutilon Flower  <img src="/static/visuals/cabbage_flower.png" style="height:150px;" />
+        Cabbage on a Stick<br>
+        <img src="/static/visuals/thistle_flower.png" style="height:150px;" />
+        Dune Thistle
+        <img src="/static/visuals/cactus_flower.png" style="height:150px;" />
+        Cactus
+        <br>
+        <br />
         <form action="/login" method="post" id="plantform" autocomplete="off">
             <input name="uname" type="text" alt="username" placeholder="username" />
             <br />
             <input name="pwd" type="password" alt="Password" placeholder="Password" />
             <br />
-            <label for="plant">Choose a car:</label>
-            <select id="plant" name="plantlist" form="plantform">
-                <option value="0">dune thistle (Cirsium pitcheri)</option>
-                <option value="1">cactus (Astrophytum asterias)</option>
-                <option value="2">hawaiian flower (Abutilon menziesii)</option>
-                <option value="3">cabbage on a stick(Brighamia insignis)</option>
+            <label for="plant">Choose a plant to be your bestie:</label>
+            <select id="plant" name="plant" form="plantform">
+                <option value="1">dune thistle (Cirsium pitcheri)</option>
+                <option value="2">cactus (Astrophytum asterias)</option>
+                <option value="3"> abutilon flower (Abutilon menziesii)</option>
+                <option value="4">cabbage on a stick(Brighamia insignis)</option>
             </select>
             <button type="submit">Log In or Sign Up</button>
         </form>

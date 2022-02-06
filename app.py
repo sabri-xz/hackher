@@ -21,10 +21,10 @@ app.secret_key = "gotti"
 def home():
     con = sqlite3.connect('girlboss.db')
     cur = con.cursor()
-    #if not session['uname']:
-    #    return render_template("login.html")
-    #else:   
-    return render_template("index.html")  
+    if not session['uname']:
+        return render_template("login.html")
+    else:   
+        return render_template("index.html")  
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     con = sqlite3.connect('girlboss.db')
@@ -35,6 +35,7 @@ def login():
         session['uname'] = request.form.get('uname')
         session['pwd'] = generate_password_hash(request.form.get('pwd'))
         session['plant'] = request.form.get('plant')
+        print(request.form.get('plant'))
         cur.execute("""
             CREATE TABLE IF NOT EXISTS users (
             username TEXT NOT NULL PRIMARY KEY,
@@ -42,12 +43,12 @@ def login():
             plant INTEGER NOT NULL
             );
             """)
-        cur.execute("SELECT * FROM users WHERE uname=?", (request.form.get('uname'),))
+        cur.execute("SELECT * FROM users WHERE username=?", (request.form.get('uname'),))
         user = cur.fetchone()
         if user is None:
             cur.execute("""
             INSERT INTO users(username, password, plant)
-            VALUES (%s, %s, %s)
+            VALUES (?, ?, ?)
             """, (session['uname'], session['pwd'], session['plant']))
         elif check_password_hash(session['pwd'], user[2]):
             con.commit()
