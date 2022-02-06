@@ -30,31 +30,32 @@ def login():
     con = sqlite3.connect('girlboss.db')
     cur = con.cursor()
     if request.method=='GET':
-        return render_template("login.html")  
-    session['uname'] = request.args.get('uname')
-    session['pwd'] = generate_password_hash(request.args.get('pwd'))
-    session['plant'] = request.args.get('plant')
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS users (
-        username TEXT NOT NULL PRIMARY KEY,
-        password TEXT NOT NULL,
-        plant INTEGER NOT NULL
-        );
-        """)
-    cur.execute("SELECT * FROM users WHERE uname=?", (session['uname'],))
-    user = cur.fetchone()
-    if user is None:
+        return render_template("login.html") 
+    else:
+        session['uname'] = request.form.get('uname')
+        session['pwd'] = generate_password_hash(request.form.get('pwd'))
+        session['plant'] = request.form.get('plant')
         cur.execute("""
-        INSERT INTO users(username, password, plant)
-        VALUES (%s, %s, %s)
-        """, (session['uname'], generate_password_hash(session['pwd']), session['plant']))
-    elif check_password_hash(session['pwd'], user[2]):
+            CREATE TABLE IF NOT EXISTS users (
+            username TEXT NOT NULL PRIMARY KEY,
+            password TEXT NOT NULL,
+            plant INTEGER NOT NULL
+            );
+            """)
+        cur.execute("SELECT * FROM users WHERE uname=?", (request.form.get('uname'),))
+        user = cur.fetchone()
+        if user is None:
+            cur.execute("""
+            INSERT INTO users(username, password, plant)
+            VALUES (%s, %s, %s)
+            """, (session['uname'], session['pwd'], session['plant']))
+        elif check_password_hash(session['pwd'], user[2]):
+            con.commit()
+            con.close()
+            return render_template("index.html")
         con.commit()
         con.close()
-        return render_template("index.html")
-    con.commit()
-    con.close()
-    return render_template("index.html")  
+        return render_template("index.html")  
 
 @app.route('/logout', methods = ['GET'])
 def logout():
