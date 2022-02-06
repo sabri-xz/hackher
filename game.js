@@ -1,14 +1,23 @@
 const context = document.querySelector("canvas").getContext("2d");
 
-context.canvas.height = 600;
-context.canvas.width = 1240;
+// context.canvas.height = 450;
+// context.canvas.width = 900;
 
-const square = {
-    height: 32,
-    jumping: true,
-    width: 32,
-    x: 0,
-    xVelocity: 0,
-    y: 0,
-    yVelocity: 0
-  };
+var cactus_url = "https://github.com/sasana-uwu/hackher/blob/main/visuals/cactus_normal.png?raw=true";
+var image = new Image();
+image.src = cactus_url;
+image.crossOrigin = true;
+
+image.onload = function() {
+    context.drawImage(
+        image,
+        0,
+        0,
+        image.width,
+        image.height,
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+};
