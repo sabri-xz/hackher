@@ -11,3 +11,5 @@ image.onload = function() {
     context.drawImage(image, 150, 0, 450, 450);
 };
 image.src = cactus_url;
+
+//var cactus 
